@@ -41,13 +41,37 @@ class ProfileController extends Controller
   }
 
     
-    public function edit()
+    public function edit(Request $request)
     {
-        return view('admin.profile.edit');
+      //Profiles Modelからデータを取得
+    $profiles = Profiles::find($request->id);
+    if (empty($profiles)){
+      abort(404);
+    }
+        return view('admin.profile.edit',['profiles_form'=>$profiles]);
     }
     
-    public function update()
+    public function update(Request $request)
     {
+      //validationをかける
+    $this->validate($request,Profiles::$rules);
+    //Profiles Modelからデータを取得
+    $profiles = Profiles::find($request->id);
+    //送信されてきたフォームデータを格納する
+    $profiles_form = $request->all();
+      if ($request->remove == 'true'){
+          $profiles_form['image_path'] = null;
+      }elseif($request->file('image')){
+          $path = $request->file('image')->store('public/image');
+          $profiles_form['image_path'] = basename($path);
+      }else{
+          $profiles_form['image_path'] = $profiles->image_path;
+      }
+      unset($profiles_form['image']);
+      unset($profiles_form['remove']);
+      unset($profiles_form['_token']);
+    //該当するデータを上書きして保存する
+    $profiles->fill($profiles_form)->save();
         return redirect('admin/profile/edit');
     }
 }
