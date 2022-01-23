@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Profiles;
+use App\Profilehistory;
+use Carbon\Carbon;
 class ProfileController extends Controller
 {
     //Laravel08ControllerとRoutingの関係について理解しよう課題4,5
@@ -72,6 +74,11 @@ class ProfileController extends Controller
       unset($profiles_form['_token']);
     //該当するデータを上書きして保存する
     $profiles->fill($profiles_form)->save();
+    //ProfilehistoryModelにも編集履歴を保存する
+    $profilehistories = new Profilehistory();
+    $profilehistories->profiles_id = $profiles->id;
+    $profilehistories->edited_at = Carbon::now();
+    $profilehistories->save();
         return redirect('admin/profile/edit');
     }
 }

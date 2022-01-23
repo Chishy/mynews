@@ -3,8 +3,13 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-// 以下を追記することでNews Modelが扱えるようになる
+// News Modelを使うよ
 use App\News;
+// History Modelを使うよ
+use App\History;
+//取得した現在時刻を保存する
+use Carbon\Carbon;
+
 class NewsController extends Controller
 {
   public function add()
@@ -83,6 +88,13 @@ class NewsController extends Controller
       unset($news_form['_token']);
     //該当するデータを上書きして保存する
     $news->fill($news_form)->save();
+    
+    //HistoryModelにも編集履歴を保存する
+    $history = new History();
+    $history->news_id = $news->id;
+    $history->edited_at = Carbon::now();
+    $history->save();
+    
     return redirect('admin/news');
   }
   

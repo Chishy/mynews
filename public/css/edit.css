@@ -1,8 +1,8 @@
 body {
   background-repeat: no-repeat;
   background-position: center;
-  background-color: #f0f8ff;
-  color: #000000;
+  background-color: #000;
+  color: #fff;
 }
 
 .navbar-laravel {

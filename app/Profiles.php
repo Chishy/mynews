@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
 class Profiles extends Model
 {
 protected $guarded = array('id');
@@ -14,4 +13,9 @@ protected $guarded = array('id');
         'syumi' => 'required',
         'syoukai' => 'required',
     );
+//Profiles Modelに関連付を行う
+    public function profilehistories()
+    {
+        return $this->hasMany('App\Profilehistory');
+    }    
 }
