@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lange="{{ app()->getLocale() }}">
+    <p>デプロイ課題</p>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible"content="IE=edge">
