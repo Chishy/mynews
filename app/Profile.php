@@ -14,4 +14,9 @@ protected $guarded = array('id');
         'syumi' => 'required',
         'syoukai' => 'required',
     );
+    
+    public function histories()
+    {
+        return $this->hasMany('App\Profilehistory');
+    }
 }

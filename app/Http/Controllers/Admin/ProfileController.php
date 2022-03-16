@@ -10,6 +10,19 @@ use App\Profilehistory;
 use Carbon\Carbon;
 class ProfileController extends Controller
 {
+  
+    public function index(Request $request)
+  {
+      $cond_name = $request->cond_name;
+      if ($cond_name != '') {
+          // 検索されたら検索結果を取得する
+          $posts = Profiles::where('simei', $cond_name)->get();
+      } else {
+          // それ以外はすべてのニュースを取得する
+          $posts = Profiles::all();
+      }
+      return view('admin.profile.index', ['posts' => $posts, 'cond_name' => $cond_name]);
+  }
     //Laravel08ControllerとRoutingの関係について理解しよう課題4,5
     public function add()
     {
@@ -48,7 +61,7 @@ class ProfileController extends Controller
       //Profiles Modelからデータを取得
     $profiles = Profiles::find($request->id);
     if (empty($profiles)){
-      abort(404);
+      return view('admin.profile.index');
     }
         return view('admin.profile.edit',['profiles_form'=>$profiles]);
     }
@@ -81,4 +94,13 @@ class ProfileController extends Controller
     $profilehistories->save();
         return redirect('admin/profile/edit');
     }
+    
+    public function delete(Request $request)
+  {
+    //該当するNews Modelを取得
+    $profiles = Profiles::find($request->id);
+    //削除する
+    $profiles->delete();
+    return redirect('admin/profile');
+  }
 }

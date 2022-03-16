@@ -12,9 +12,12 @@
         {{-- 各ページ毎にtitleタグを入れるために@yieldで空けておく　--}}
         <title>@yield('title')</title>
         
+        <!-- Scripts -->
+         <script src="{{ asset('js/app.js') }}" defer></script>
+        
         <!-- Fonts -->
         <link rel="dns-prefetch" href="http://fonts.gstatic.com">
-        <link href="https://fonts.gogleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
+        <link href="https://fonts.gogleapis.com/css?family=Raleway:300,400,600 rel="stylesheet" type="text/css">
         
             <!-- Styles -->
             {{-- Laravel標準で用意されているCSSを読み込む --}}
@@ -44,15 +47,21 @@
                         <ul class="navbar-nav ml-auto">
                         {{-- ログインしていなかったらログイン画面へのリンクを表示--}}
                         @guest
-                            <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
-                        {{-- ログインしていたらユーザー名とログアウトボタンを表示 --}}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -64,7 +73,7 @@
                                     </form>
                                 </div>
                             </li>
-                            @endguest
+                        @endguest
                         </ul>
                     </div>
                 </div>
